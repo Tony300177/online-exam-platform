@@ -65,7 +65,6 @@ export default async function Home() {
 
       <footer className="border-t border-slate-200 bg-white/80 py-6 text-center text-xs text-slate-500 backdrop-blur">
         <p>Dados pessoais de estudantes são tratados conforme a LGPD. Resultados individuais são visíveis apenas a pessoas autorizadas.</p>
-        <p className="mt-1 font-bold text-[10px]">Desenvolvido Pelo Departamento de Tecnologia da SME.</p>
       </footer>
     </main>
   );
