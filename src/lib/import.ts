@@ -26,6 +26,11 @@ export type Mapping = {
   gradeYear: string;
   studentName: string;
   registration?: string;
+  sex?: string;
+  birthDate?: string;
+  race?: string;
+  neighborhood?: string;
+  shift?: string;
 };
 
 export type RowIssue = { line: number; level: "erro" | "aviso"; message: string };
@@ -33,9 +38,14 @@ export type RowIssue = { line: number; level: "erro" | "aviso"; message: string 
 export function parseGradeYear(value: string): number | null {
   if (!value) return null;
   const m = value.match(/\d+/);
-  if (!m) return null;
-  const n = Number(m[0]);
-  return n >= 1 && n <= 9 ? n : null;
+  if (m) {
+    const n = Number(m[0]);
+    return n >= 1 && n <= 9 ? n : null;
+  }
+  const v = normalizeName(value);
+  if (v.includes("PRE I") || v.includes("MATERNAL") || v.includes("BERCARIO") || v.includes("BERÇÁRIO")) return 0;
+  if (v.includes("PRE II") || v.includes("JARDIM") || v.includes("PRE II")) return 0;
+  return null;
 }
 
 export function normalizeName(value: string) {
@@ -54,6 +64,11 @@ export type ValidatedRow = {
   gradeYear: number;
   studentName: string;
   registration: string | null;
+  sex: string | null;
+  birthDate: string | null;
+  race: string | null;
+  neighborhood: string | null;
+  shift: string | null;
 };
 
 export function validateRows(rows: Record<string, string>[], map: Mapping) {
@@ -68,6 +83,11 @@ export function validateRows(rows: Record<string, string>[], map: Mapping) {
     const rawGrade = (row[map.gradeYear] ?? "").trim() || className;
     const studentName = (row[map.studentName] ?? "").trim();
     const registration = map.registration ? (row[map.registration] ?? "").trim() : "";
+    const sex = map.sex ? (row[map.sex] ?? "").trim() : "";
+    const birthDate = map.birthDate ? (row[map.birthDate] ?? "").trim() : "";
+    const race = map.race ? (row[map.race] ?? "").trim() : "";
+    const neighborhood = map.neighborhood ? (row[map.neighborhood] ?? "").trim() : "";
+    const shift = map.shift ? (row[map.shift] ?? "").trim() : "";
 
     if (!school && !className && !studentName) return; // linha vazia é ignorada
     if (!school) {
@@ -110,6 +130,11 @@ export function validateRows(rows: Record<string, string>[], map: Mapping) {
       gradeYear: grade,
       studentName,
       registration: registration || null,
+      sex: sex || null,
+      birthDate: birthDate || null,
+      race: race || null,
+      neighborhood: neighborhood || null,
+      shift: shift || null,
     });
   });
 
@@ -121,9 +146,14 @@ export function guessMapping(headers: string[]): Partial<Mapping> {
     headers.find((h) => terms.some((t) => normalizeName(h).includes(normalizeName(t))));
   return {
     school: find("escola", "unidade", "colegio"),
-    className: find("turma", "classe"),
-    gradeYear: find("ano escolar", "ano", "serie", "série"),
+    className: find("nome da turma", "turma", "classe"),
+    gradeYear: find("ano escolar", "ano/série", "ano/serie", "ano", "serie", "série"),
     studentName: find("nome do aluno", "aluno", "estudante", "nome"),
     registration: find("matricula", "matrícula", "ra", "codigo do aluno"),
+    sex: find("sexo", "genero", "gênero"),
+    birthDate: find("data nascimento", "data de nascimento", "nascimento"),
+    race: find("raça", "raca", "cor"),
+    neighborhood: find("bairro", "bairro"),
+    shift: find("turno", "periodo", "período"),
   };
 }

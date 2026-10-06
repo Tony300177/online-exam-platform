@@ -115,6 +115,7 @@ export async function POST(request: Request) {
                 schoolId,
                 name: row.className,
                 gradeYear: row.gradeYear,
+                shift: row.shift || null,
                 academicYear: 2026,
               })
               .returning({ id: classes.id });
@@ -141,6 +142,10 @@ export async function POST(request: Request) {
             .set({
               fullName: row.studentName,
               registration: row.registration ?? existing.registration,
+              birthDate: row.birthDate ?? existing.birthDate,
+              sex: row.sex ?? existing.sex,
+              race: row.race ?? existing.race,
+              neighborhood: row.neighborhood ?? existing.neighborhood,
               active: true,
             })
             .where(eq(students.id, studentId));
@@ -153,6 +158,10 @@ export async function POST(request: Request) {
               fullName: row.studentName,
               normalizedName: normalized,
               registration: row.registration,
+              birthDate: row.birthDate,
+              sex: row.sex,
+              race: row.race,
+              neighborhood: row.neighborhood,
             })
             .returning({ id: students.id });
           studentId = created.id;
