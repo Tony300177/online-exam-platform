@@ -42,6 +42,7 @@ export const schools = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
     slug: text("slug").notNull(),
+    code: text("code"),
     city: text("city"),
     network: text("network"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
