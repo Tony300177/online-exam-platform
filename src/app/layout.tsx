@@ -13,6 +13,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <body className="min-h-screen bg-slate-100 text-slate-900 antialiased">
         {children}
+        <footer className="border-t border-slate-200 bg-white py-4 text-center text-xs text-slate-500">
+          <p className="font-bold text-[10px]">Desenvolvido Pelo Departamento de Tecnologia da SME.</p>
+        </footer>
       </body>
     </html>
   );
