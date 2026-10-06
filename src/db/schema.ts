@@ -119,6 +119,7 @@ export const profiles = pgTable(
     role: userRole("role").notNull(),
     fullName: text("full_name").notNull(),
     email: text("email"),
+    username: text("username"),
     passwordHash: text("password_hash").notNull(),
     mustChangePassword: boolean("must_change_password").notNull().default(false),
     schoolId: uuid("school_id").references(() => schools.id, { onDelete: "set null" }),

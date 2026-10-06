@@ -7,7 +7,7 @@ import { btnPrimary, Field, inputClass } from "@/components/ui";
 
 export default function StaffLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function StaffLogin() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Falha no acesso.");
@@ -43,15 +43,15 @@ export default function StaffLogin() {
         <p className="mt-1 text-sm text-slate-600">Administrador, gestor/coordenação ou professor.</p>
 
         <div className="mt-6 flex flex-col gap-4">
-          <Field label="E-mail institucional" htmlFor="email">
+          <Field label="Usuário" htmlFor="username">
             <input
-              id="email"
-              type="email"
+              id="username"
+              type="text"
               autoComplete="username"
               required
               className={inputClass}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </Field>
           <Field label="Senha" htmlFor="password">

@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { db } from "@/db";
 import { profiles } from "@/db/schema";
 import { audit, createSession, errorResponse, HttpError, verifyPassword } from "@/lib/auth";
@@ -8,12 +8,16 @@ const LOCK_MINUTES = 10;
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as { email?: string; password?: string };
-    const email = (body.email ?? "").trim().toLowerCase();
+    const body = (await request.json()) as { username?: string; password?: string };
+    const username = (body.username ?? "").trim().toLowerCase();
     const password = body.password ?? "";
-    if (!email || !password) throw new HttpError(400, "Informe e-mail e senha.");
+    if (!username || !password) throw new HttpError(400, "Informe usuário e senha.");
 
-    const rows = await db.select().from(profiles).where(eq(profiles.email, email)).limit(1);
+    const rows = await db
+      .select()
+      .from(profiles)
+      .where(or(eq(profiles.username, username), eq(profiles.email, username)))
+      .limit(1);
     const user = rows[0];
     const invalid = new HttpError(401, "Credenciais inválidas.");
     if (!user || !user.active || user.role === "student") throw invalid;
