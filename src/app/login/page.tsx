@@ -74,9 +74,8 @@ export default function StaffLogin() {
             {loading ? "Entrando…" : "Entrar"}
           </button>
         </div>
-        <p className="mt-6 rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
-          Ambiente de demonstração: admin@plataforma.edu / Admin@123 · gestor@plataforma.edu /
-          Gestor@123 · professor@plataforma.edu / Prof@123
+        <p className="mt-6 text-center text-xs text-slate-400">
+          Acesso restrito à equipe escolar. Em caso de dúvidas, procure o administrador do sistema.
         </p>
       </form>
     </main>
