@@ -36,3 +36,8 @@ yarn-error.log*
 .idea/
 .vscode/
 .vercel
+
+# temp import files
+import*.cjs
+import*.sql
+*_import.csv
