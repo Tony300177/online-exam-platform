@@ -52,6 +52,8 @@ export default async function Home() {
       <footer className="text-xs text-slate-500">
         Dados pessoais de estudantes são tratados conforme a LGPD. Resultados individuais são
         visíveis apenas a pessoas autorizadas; a plataforma não publica rankings de crianças.
+        <br />
+        Desenvolvido pelo Departamento de Tecnologia da SME.
       </footer>
     </main>
   );
