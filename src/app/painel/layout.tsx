@@ -29,7 +29,6 @@ export default async function PainelLayout({ children }: { children: ReactNode }
   const user = await getSessionUser();
   if (!user) redirect("/login");
   if (user.role === "student") redirect("/aluno");
-  if (user.mustChangePassword) redirect("/trocar-senha");
 
   const items = NAV.filter((n) => n.roles.includes(user.role));
 
@@ -46,9 +45,7 @@ export default async function PainelLayout({ children }: { children: ReactNode }
           <div className="flex items-center gap-3 text-sm">
             <span className="hidden text-slate-600 sm:inline">{user.fullName}</span>
             <Badge tone="blue">{ROLE_LABEL[user.role]}</Badge>
-            <Link href="/trocar-senha" className="text-slate-600 hover:underline">
-              Senha
-            </Link>
+
             <LogoutButton />
           </div>
         </div>

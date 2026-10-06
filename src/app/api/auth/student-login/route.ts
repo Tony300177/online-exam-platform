@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       "profiles",
       user.profileId,
     );
-    return Response.json({ ok: true, redirect: user.mustChange ? "/trocar-senha" : "/aluno" });
+    return Response.json({ ok: true, redirect: "/aluno" });
   } catch (e) {
     return errorResponse(e);
   }

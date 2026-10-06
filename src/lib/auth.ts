@@ -160,7 +160,6 @@ export async function audit(
 export async function requirePage(roles?: Role[]): Promise<SessionUser> {
   const user = await getSessionUser();
   if (!user) redirect("/login");
-  if (user.mustChangePassword) redirect("/trocar-senha");
   if (roles && !roles.includes(user.role)) redirect(user.role === "student" ? "/aluno" : "/painel");
   return user;
 }

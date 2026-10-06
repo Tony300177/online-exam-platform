@@ -12,7 +12,6 @@ export default async function AlunoHome() {
   const user = await getSessionUser();
   if (!user) redirect("/aluno/login");
   if (user.role !== "student" || !user.studentId) redirect("/painel");
-  if (user.mustChangePassword) redirect("/trocar-senha");
 
   const list = await assessmentsForStudent(user.studentId);
   const myAttempts = await db.select().from(attempts).where(eq(attempts.studentId, user.studentId));

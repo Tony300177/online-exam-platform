@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       "profiles",
       user.id,
     );
-    return Response.json({ ok: true, redirect: user.mustChangePassword ? "/trocar-senha" : "/painel" });
+    return Response.json({ ok: true, redirect: "/painel" });
   } catch (e) {
     return errorResponse(e);
   }
