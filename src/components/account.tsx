@@ -65,7 +65,7 @@ export function ChangePasswordForm({ forced }: { forced: boolean }) {
       <Field label="Senha atual" htmlFor="cur">
         <input id="cur" type="password" required className={inputClass} value={currentPassword} onChange={(e) => setCurrent(e.target.value)} />
       </Field>
-      <Field label="Nova senha" htmlFor="new" hint="Mínimo de 6 caracteres e diferente da senha padrão.">
+      <Field label="Nova senha" htmlFor="new">
         <input id="new" type="password" required minLength={6} className={inputClass} value={newPassword} onChange={(e) => setNew(e.target.value)} />
       </Field>
       <Field label="Confirmar nova senha" htmlFor="conf">

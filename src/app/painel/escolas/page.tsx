@@ -175,9 +175,7 @@ export default async function EscolasPage({
                 <input id="st-reg" name="registration" className={inputClass} />
               </Field>
               <button className={btnPrimary}>Cadastrar aluno</button>
-              <p className="text-xs text-slate-500">
-                O acesso é criado com a senha padrão 123456 e troca obrigatória no primeiro login.
-              </p>
+
             </form>
           )}
         </Card>
