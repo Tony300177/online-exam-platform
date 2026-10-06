@@ -43,10 +43,11 @@ export default function StudentLogin() {
   const router = useRouter();
   const [schools, setSchools] = useState<Option[]>([]);
   const [classes, setClasses] = useState<Option[]>([]);
+  const [students, setStudents] = useState<Option[]>([]);
   const [schoolId, setSchoolId] = useState("");
   const [classId, setClassId] = useState("");
   const [fullName, setFullName] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("123456");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -64,6 +65,14 @@ export default function StudentLogin() {
       .then((d) => setClasses(d.classes ?? []))
       .catch(() => setError("Não foi possível carregar as turmas."));
   }, [schoolId]);
+
+  useEffect(() => {
+    if (!classId) return;
+    fetch(`/api/public/students?schoolId=${schoolId}&classId=${classId}`)
+      .then((r) => r.json())
+      .then((d) => setStudents((d.students ?? []).map((s: { id: string; fullName: string }) => ({ id: s.id, name: s.fullName }))))
+      .catch(() => setError("Não foi possível carregar os alunos."));
+  }, [classId, schoolId]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -149,6 +158,8 @@ export default function StudentLogin() {
                     setSchoolId(e.target.value);
                     setClassId("");
                     setClasses([]);
+                    setStudents([]);
+                    setFullName("");
                   }}
                 >
                   <option value="">Selecione sua escola</option>
@@ -167,7 +178,11 @@ export default function StudentLogin() {
                   disabled={!schoolId}
                   className={`${inputClass} py-3 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400`}
                   value={classId}
-                  onChange={(e) => setClassId(e.target.value)}
+                  onChange={(e) => {
+                    setClassId(e.target.value);
+                    setStudents([]);
+                    setFullName("");
+                  }}
                 >
                   <option value="">
                     {schoolId ? "Selecione sua turma" : "Escolha a escola primeiro"}
@@ -181,15 +196,23 @@ export default function StudentLogin() {
               </Field>
 
               <Field label="Nome completo" htmlFor="name">
-                <input
+                <select
                   id="name"
                   required
-                  autoComplete="name"
-                  placeholder="Conste na matrícula"
-                  className={`${inputClass} py-3`}
+                  disabled={!classId}
+                  className={`${inputClass} py-3 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400`}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                />
+                >
+                  <option value="">
+                    {classId ? "Selecione seu nome" : "Escolha a turma primeiro"}
+                  </option>
+                  {students.map((s) => (
+                    <option key={s.id} value={s.name}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
               </Field>
 
               <Field label="Senha" htmlFor="pwd">
@@ -198,7 +221,7 @@ export default function StudentLogin() {
                   type="password"
                   required
                   autoComplete="current-password"
-                  placeholder="Informe sua senha"
+                  placeholder="Senha padrão da escola"
                   className={`${inputClass} py-3`}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
